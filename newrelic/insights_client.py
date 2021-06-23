@@ -1,6 +1,7 @@
 import requests
 import gzip, json
 import copy
+import collections
 
 # NRQL Query Example: "SELECT count(*) FROM Transaction SINCE 1 minute ago"
 class NewRelicInsightsApi:
