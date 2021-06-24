@@ -1,3 +1,3 @@
-from newrelic import NewRelicAlertsChannelsApi
+# from newrelic import NewRelicAlertsChannelsApi
 
 # TODO - This needs tests!
