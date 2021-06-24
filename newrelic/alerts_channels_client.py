@@ -1,14 +1,14 @@
 import requests
 import json
-from enum import Enum
 from urllib.parse import urlencode
+
 
 class NewRelicAlertsChannelsApi:
 
     def __init__(
-            self, 
-            api_key, 
-            api_url='https://api.newrelic.com', 
+            self,
+            api_key,
+            api_url='https://api.newrelic.com',
             verbose=False
     ):
         self._api_key = api_key
@@ -25,24 +25,29 @@ class NewRelicAlertsChannelsApi:
         headers['Accept'] = 'application/json'
 
         s = requests.Session()
-        response = s.request(method, api_url, data=body, params=params, headers=headers)
+        response = s.request(
+            method,
+            api_url,
+            data=body,
+            params=params,
+            headers=headers)
 
         if response.status_code >= 200 and response.status_code < 300:
             return response.json()
         elif response.content:
-            raise Exception(str(response.status_code) + ': ' + response.reason + ': ' + str(response.content))
+            raise Exception(str(response.status_code) + ': ' +
+                            response.reason + ': ' + str(response.content))
         else:
             raise Exception(str(response.status_code) + ': ' + response.reason)
 
-
     def list_channels(self):
         return self._request(
-            'GET', 
+            'GET',
             '/v2/alerts_channels.json'
         )
-        
+
     # channel_type must be a string matching one of the following:
-    # 
+    #
     #   User
     #   Email
     #   OpsGenie
@@ -64,7 +69,7 @@ class NewRelicAlertsChannelsApi:
             }
         }
         return self._request(
-            'POST', 
+            'POST',
             '/v2/alerts_channels.json',
             headers=headers,
             body=json.dumps(body)
@@ -72,7 +77,7 @@ class NewRelicAlertsChannelsApi:
 
     def delete_channel(self, channel_id):
         return self._request(
-            'DELETE', 
+            'DELETE',
             f'/v2/alerts_channels/{channel_id}.json'
         )
 
@@ -85,19 +90,19 @@ class NewRelicAlertsChannelsApi:
             'policy_id': policy_id
         }
         return self._request(
-            'PUT', 
+            'PUT',
             '/v2/alerts_policy_channels.json',
             headers=headers,
             params=urlencode(params, True)
         )
-    
+
     def delete_channel_association(self, channel_id, policy_id):
         params = {
             'channel_id': channel_id,
             'policy_id': policy_id
         }
         return self._request(
-            'DELETE', 
-            f'/v2/alerts_policy_channels.json',
+            'DELETE',
+            '/v2/alerts_policy_channels.json',
             params=urlencode(params, True)
         )
